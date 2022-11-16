@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "scipdf-parser"
+version = "0.1.0"
+description = ""
+authors = ["Phil Harper <phil@imrge.co>"]
+readme = "README.md"
+packages = [{include = "scipdf_parser"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+lxml = "^4.9.1"
+spacy = "^3.4.3"
+pandas = "^1.5.1"
+textstat = "^0.7.3"
+beautifulsoup4 = "^4.11.1"
+pydantic = "^1.10.2"
+aiohttp = "^3.8.3"
+
+
+
+[tool.poetry.dev-dependencies]
+ipykernel = "^6.17.1"
+
+[tool.poetry.group.dev.dependencies]
+setuptools = "^65.5.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

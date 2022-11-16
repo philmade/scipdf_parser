@@ -41,7 +41,7 @@ def validate_url(path: str):
 def parse_pdf(
     pdf_path: str,
     fulltext: bool = True,
-    soup: bool = False,
+    soup: bool = True,
     grobid_url: str = GROBID_URL,
 ):
     """
@@ -111,11 +111,17 @@ def parse_authors(article):
         middlename = middlename.text.strip() if middlename is not None else ""
         lastname = author.find("surname")
         lastname = lastname.text.strip() if lastname is not None else ""
-        if middlename is not "":
+        # Added this line to remove supersript from any names
+        # strip superscript
+        firstname = "".join([i for i in firstname if ord(i) < 128])
+        middlename = "".join([i for i in middlename if ord(i) < 128])
+        lastname = "".join([i for i in lastname if ord(i) < 128])
+        if middlename != "":
             authors.append(firstname + " " + middlename + " " + lastname)
         else:
             authors.append(firstname + " " + lastname)
-    authors = "; ".join(authors)
+    # Removed this line so authors are returned as list, easier to parse
+    # authors = "; ".join(authors)
     return authors
 
 
@@ -197,7 +203,7 @@ def parse_sections(article, as_list: bool = False):
                         pass
             if not as_list:
                 text = "\n".join(text)
-        if heading is not "" or text is not "":
+        if heading != "" or text != "":
             ref_dict = calculate_number_of_references(div)
             sections.append(
                 {
@@ -225,7 +231,7 @@ def parse_references(article):
         title = title.text if title is not None else ""
         journal = reference.find("title", attrs={"level": "j"})
         journal = journal.text if journal is not None else ""
-        if journal is "":
+        if journal == "":
             journal = reference.find("publisher")
             journal = journal.text if journal is not None else ""
         year = reference.find("date")
@@ -238,7 +244,7 @@ def parse_references(article):
             middlename = middlename.text.strip() if middlename is not None else ""
             lastname = author.find("surname")
             lastname = lastname.text.strip() if lastname is not None else ""
-            if middlename is not "":
+            if middlename != "":
                 authors.append(firstname + " " + middlename + " " + lastname)
             else:
                 authors.append(firstname + " " + lastname)
@@ -257,7 +263,7 @@ def parse_figure_caption(article):
     figures = article.find_all("figure")
     for figure in figures:
         figure_type = figure.attrs.get("type") or ""
-        figure_id = figure.attrs["xml:id"] or ""
+        figure_id = figure.attrs.get("xml:id") or ""
         label = figure.find("label").text
         if figure_type == "table":
             caption = figure.find("figdesc").text
