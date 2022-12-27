@@ -6,6 +6,7 @@ import subprocess
 import requests
 from bs4 import BeautifulSoup, NavigableString
 from tqdm import tqdm, tqdm_notebook
+from typing import Union
 
 
 GROBID_URL = "http://localhost:8070"  # or https://cloud.science-miner.com/grobid/ for cloud service
@@ -283,7 +284,7 @@ def parse_figure_caption(article):
     return figures_list
 
 
-def convert_article_soup_to_dict(article, as_list: bool = False):
+def convert_article_soup_to_dict(article, as_list: bool = False) -> Union[dict, None]:
     """
     Function to convert BeautifulSoup to JSON format
     similar to the output from https://github.com/allenai/science-parse/
@@ -341,7 +342,7 @@ def parse_pdf_to_dict(
     soup: bool = True,
     as_list: bool = False,
     grobid_url: str = GROBID_URL,
-):
+) -> Union[dict, None]:
     """
     Parse the given PDF and return dictionary of the parsed article
 
