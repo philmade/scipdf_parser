@@ -9,7 +9,7 @@ from tqdm import tqdm, tqdm_notebook
 from typing import Union
 
 
-GROBID_URL = "http://localhost:8070"  # or https://cloud.science-miner.com/grobid/ for cloud service
+GROBID_URL = os.environ.get("GROBID_URL")  # or https://cloud.science-miner.com/grobid/ for cloud service
 DIR_PATH = os.path.dirname(os.path.abspath(__file__))
 PDF_FIGURES_JAR_PATH = os.path.join(
     DIR_PATH, "pdffigures2", "pdffigures2-assembly-0.0.12-SNAPSHOT.jar"
